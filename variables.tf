@@ -19,7 +19,7 @@ variable "aks_name" {
 variable "key_vault_name" {
   type        = string
   description = "Existing Key Vault the cluster's ESO ClusterSecretStore reads from."
-  default     = "lifeguide-dev-kv-67c717e5"
+  default     = "lifeguide-dev-kv"
 }
 
 variable "gitops_repo_url" {
