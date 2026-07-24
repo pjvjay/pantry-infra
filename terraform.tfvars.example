@@ -1,0 +1,5 @@
+# Copy to terraform.tfvars and fill in for your environment.
+subscription_id     = "00000000-0000-0000-0000-000000000000"
+resource_group_name = "my-resource-group"
+aks_name            = "my-aks-cluster"
+key_vault_name      = "my-key-vault"
