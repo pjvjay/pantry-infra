@@ -1,25 +1,21 @@
 variable "subscription_id" {
   type        = string
-  description = "Azure subscription ID."
-  default     = "67c717e5-eaca-4f7d-9495-8b65ff376823"
+  description = "Azure subscription ID hosting the target cluster."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Existing resource group holding the shared AKS + Key Vault."
-  default     = "rg-therealpj92-0374"
+  description = "Existing resource group holding the AKS cluster + Key Vault."
 }
 
 variable "aks_name" {
   type        = string
-  description = "Existing AKS cluster (provisioned by lifeguide-infra)."
-  default     = "lifeguide-dev-aks"
+  description = "Existing AKS cluster to deploy onto (see README for the platform prerequisites it must satisfy)."
 }
 
 variable "key_vault_name" {
   type        = string
-  description = "Existing Key Vault the cluster's ESO ClusterSecretStore reads from."
-  default     = "lifeguide-dev-kv"
+  description = "Existing Key Vault that the cluster's External Secrets Operator ClusterSecretStore reads from."
 }
 
 variable "gitops_repo_url" {

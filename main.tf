@@ -11,10 +11,11 @@
 #     - namespaces, ExternalSecrets, CNPG Cluster,
 #       Deployments, Services, Ingress, migration Job
 #
-# Shared platform (AKS, ArgoCD install, ingress-nginx, cert-manager,
-# CNPG operator, External Secrets Operator) is provisioned by
-# lifeguide-infra and only *referenced* here via data sources —
-# this stack can't break it.
+# The target cluster is a PREREQUISITE, referenced via data sources
+# only — this stack never creates or mutates it. It must already run
+# the platform layer listed in the README (ArgoCD, ingress-nginx,
+# cert-manager, CloudNativePG operator, External Secrets Operator
+# with a ClusterSecretStore named "azure-key-vault").
 # ============================================================
 
 data "azurerm_resource_group" "rg" {

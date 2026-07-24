@@ -9,6 +9,6 @@ output "root_application" {
 }
 
 output "app_url" {
-  description = "Where the app lands once ArgoCD converges."
-  value       = "https://lifeguide-dev-67c717e5.canadacentral.cloudapp.azure.com/pantry/"
+  description = "Where the app lands once ArgoCD converges (path prefix on the cluster's ingress host)."
+  value       = "https://<your-cluster-ingress-host>/pantry/"
 }
