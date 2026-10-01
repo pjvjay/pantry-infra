@@ -12,3 +12,8 @@ output "app_url" {
   description = "Where the app lands once ArgoCD converges (path prefix on the cluster's ingress host)."
   value       = "https://<your-cluster-ingress-host>/pantry/"
 }
+
+output "mcp_tokens_secret_name" {
+  description = "Key Vault entry holding the MCP bearer tokens (label:secret[,...]) that the gitops ExternalSecret projects into pantry-app."
+  value       = azurerm_key_vault_secret.pantry_mcp_tokens.name
+}
