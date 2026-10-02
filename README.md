@@ -80,15 +80,30 @@ submitter/reviewer on origin submissions); a client sends only the secret:
 
 ```bash
 SECRET=$(az keyvault secret show --vault-name <kv> --name pantry-mcp-tokens \
-           --query value -o tsv | cut -d: -f2)
+           --query value -o tsv | tr ',' '\n' | awk -F: '$1=="terraform"{print $2}')
 claude mcp add --transport http pantry-remote \
   https://<your-cluster-ingress-host>/pantry/api/mcp \
   --header "Authorization: Bearer $SECRET"
 ```
 
+The pipeline selects the `terraform` entry by label, so it keeps working
+once the value holds several `label:secret` entries.
+
 To add a second client with its own audit label, append `,<label>:<secret>`
-to the Key Vault value (outside Terraform, or by adding an entry here) and
-let ESO re-sync; the API reads the whole list.
+to the Key Vault value (outside Terraform, or by adding an entry here),
+wait for ESO to re-sync the Secret (or force it with the `force-sync`
+annotation), then roll the API so the new value reaches the process —
+`MCP_AUTH_TOKENS` is an environment variable resolved at pod start, and
+the API caches its configuration for the life of the process:
+
+```bash
+kubectl rollout restart deployment/pantry-api -n pantry-app
+```
+
+Apply this Terraform **before** merging the pantry-gitops change that adds
+the `pantry-mcp-credentials` ExternalSecret: ESO marks an ExternalSecret
+whose Key Vault entry is missing as not Ready, and ArgoCD then reports the
+pantry-infra Application Degraded until the entry exists.
 
 ## Teardown
 
