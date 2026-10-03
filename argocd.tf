@@ -44,7 +44,12 @@ resource "kubernetes_manifest" "pantry_root_app" {
     }
   }
 
-  # Make sure the DB password exists in Key Vault before ArgoCD starts
-  # syncing manifests whose ExternalSecrets reference it.
-  depends_on = [azurerm_key_vault_secret.pantry_db_password]
+  # Make sure every Key Vault entry the gitops ExternalSecrets reference
+  # exists before ArgoCD starts syncing them; an ExternalSecret whose entry
+  # is missing goes Degraded and holds the pantry-infra Application at its
+  # sync wave.
+  depends_on = [
+    azurerm_key_vault_secret.pantry_db_password,
+    azurerm_key_vault_secret.pantry_mcp_tokens,
+  ]
 }
